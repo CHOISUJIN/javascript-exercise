@@ -5,36 +5,79 @@
     <meta charset="utf-8" />
     <title></title>
     <style>
-        input{width:100%;}
-        caption{font-size:30px;}
-        table {border-collapse:collapse; border:1px solid #000; width:40%;}
-        table, th {background-color:#333;}
-        th { height: 80px; padding-right:10px;}
-        th > input {height:75px; border:none; background-color:#333; color:#fff; text-align:right; font-size:45px;}
-        td {height:75px; text-align:center;}
-        td > input {height:75px; border:none; font-size:35px;}
-        td > input[type="button"]:hover{ background-color:#999; }
+        input { width: 100%; }
+        caption { font-size: 30px; }
+        table { border-collapse: collapse; border: 1px solid #000; width: 40%; }
+        table, th { background-color: #333; }
+        th { height: 80px; padding-right: 10px; }
+        th > input { height: 75px; border: none; background-color: #333; color: #fff; text-align: right; font-size: 45px; }
+        td { height: 75px; text-align: center; }
+        td > input { height: 75px; border: none; font-size: 35px; }
+        td > input[type="button"]:hover { background-color: #999; }
         td:last-child > input { background-color: orange; color: #fff; }
     </style>
     <script>
+        window.onload = function () {
+            var inp = document.forms['cal'];
+            var input = document.getElementsByTagName('input');
+            var clearbtn = document.getElementById('clear-btn');
+            var resultbtn = document.getElementById('result-btn');
 
+            // 초기화
+            function clear() {
+                inp['result'].value = 0;
+            }
+
+            // 버튼 클릭
+            function calc(value) {
+                if (inp['result'].value == 0) {
+                    inp['result'].value = '';
+                }
+
+                inp['result'].value += value;
+            }
+
+            // 계산 처리
+            function result() {
+                var result = inp['result'];
+                var calc = eval(result.value);
+
+                inp['result'].value = calc;
+            }
+
+            for (var i = 0; i < input.length; i++) {
+                if (input[i].value != '=' && input[i].value != 'clear') {
+                    input[i].addEventListener('click', function () {
+                        calc(this.value);
+                    });
+                }
+            }
+
+            clearbtn.addEventListener('click', function () {
+                clear();
+            });
+
+            resultbtn.addEventListener('click', function () {
+                result();
+            });
+        };
     </script>
 </head>
 <body>
-    <form>
+    <form name="cal">
         <table>
             <colgroup>
-                <col style="width:27%"/>
+                <col style="width:27%" />
                 <col style="width:27%" />
                 <col style="width:27%" />
                 <col style="width:16%" />
             </colgroup>
-            <caption>계산기</caption>
+            <caption></caption>
             <tr>
-                <th colspan="4"><input type="text" value="0" name="result"/></th>
+                <th colspan="4"><input type="text" value="0" name="result" /></th>
             </tr>
             <tr>
-                <td><input type="button" value="7"/></td>
+                <td><input type="button" value="7" /></td>
                 <td><input type="button" value="8" /></td>
                 <td><input type="button" value="9" /></td>
                 <td><input type="button" value="+" /></td>
@@ -57,10 +100,11 @@
                 <td><input type="button" value="/" /></td>
             </tr>
             <tr>
-                <td colspan="2"><input type="button" value="Clear" /></td>
-                <td colspan="2"><input type="button" value="=" /></td>
+                <td colspan="2"><input type="button" value="Clear" class="clear-btn" id="clear-btn" /></td>
+                <td colspan="2"><input type="button" value="=" class="result-btn" id="result-btn" /></td>
             </tr>
         </table>
     </form>
+
 </body>
 </html>
