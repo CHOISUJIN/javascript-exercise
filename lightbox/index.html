@@ -1,30 +1,145 @@
 ﻿<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="utf-8" />
     <title></title>
     <style>
+        *{margin: 0;}
+        body{padding: 20px;}
+        h1 {font-weight: normal; margin: 5px 0;}
 
+        #lightbox.active{
+            position: absolute;
+            overflow: hidden;
+            background: #333;
+            width: 800px;
+            height: 540px;
+            left: 50%;
+            margin-left: -400px;
+            top: 50%;
+            margin-top: -250px;
+            box-sizing: border-box;
+            padding: 30px;
+            z-index: 99;
+            display: block;
+        }
+
+        #lightbox {display: none;}
+
+        #lightbox h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        figure{
+            width: 500px;
+            height: 300px;
+            position: relative;
+            margin: 10px auto;
+            overflow:hidden;
+        }
+
+
+        figure img {
+            display: none;
+            position: absolute;
+            height: 100%;
+        }
+        
+        figure img.active{display: block;}
+
+        .btn-close{
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            padding: 10px;
+            color: #fff;
+            font-size:large;
+        }
+
+        .btn-close:hover{background-color: #666;}
+
+        #block {
+            position: fixed;
+            width:100%; 
+            height: 100%;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #111;
+            opacity: 0.5;
+            z-index: 9;
+            display: none;
+        }
+
+        #block.active{display: block;}
+        
+        .indicator{text-align: center;}
+        .indicator button{
+            background: #666;
+            color:#fff;
+            font-size:12px;
+            border: none;
+            padding: 2px 5px;
+        }
+        .indicator button:focus{background: #38f;}
     </style>
-    <script>
-
-    </script>
 </head>
 <body>
     <div>
         <h1>light box</h1>
-        <img src="/images/img1.jpg" width="100" class="img"/>
-        <img src="/images/img2.jpg" width="100" class="img"/>
-        <img src="/images/img3.jpg" width="100" class="img"/>
+        <img src="images/img1.jpg" width="100" class="thumb" onclick="lightbox_opne(1)"/>
+        <img src="images/img2.jpg" width="100" class="thumb" onclick="lightbox_opne(2)" />
+        <img src="images/img3.jpg" width="100" class="thumb" onclick="lightbox_opne(3)" />
     </div>
-    <div class="block"></div>
-    <div class="lightbox">
+    <div id="block"></div>
+    <div id="lightbox">
+        <h1>사진</h1>
         <figure>
-            <img src="/images/img1.jpg" class="active" />
-            <img src="/images/img2.jpg" class="" />
-            <img src="/images/img3.jpg" class="" />
+            <img src="images/img1.jpg" class="active" />
+            <img src="images/img2.jpg" class="" />
+            <img src="images/img3.jpg" class="" />
         </figure>
+
+        <div class="indicator">
+            <button onclick="change_img(this.innerHTML)">1</button>
+            <button onclick="change_img(this.innerHTML)">2</button>
+            <button onclick="change_img(this.innerHTML)">3</button>
+        </div>
+        <div class="btn-close" onclick="lightbox_close()">X</div>
     </div>
 </body>
 </html>
+
+<script>
+    // 인디케이터 초기화
+    var indicator = document.querySelectorAll('.indicator button');
+    var lightbox = document.querySelector('#lightbox');
+    var block = document.querySelector('#block');
+
+    function lightbox_opne(num) {
+        lightbox.setAttribute('class', 'active');
+        block.setAttribute('class', 'active');
+        change_img(num);
+        indicator[num-1].focus();
+    }
+
+    function lightbox_close() {
+        lightbox.removeAttribute('class');
+        block.removeAttribute('class');
+    }
+
+    function change_img(val) {
+        var imgs = document.querySelectorAll('figure > img'); 
+
+        for(var i=0; i <imgs.length; i++){
+            imgs[i].removeAttribute('class');
+        }
+
+        imgs[val-1].setAttribute('class', 'active');
+    }
+</script>
